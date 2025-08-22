@@ -1,20 +1,24 @@
+const path = require('path');
+
 module.exports = {
-    entry: "./src/index.js",
-    output: {
-        path: __dirname,
-        filename: "./build/bundle.js"
-    },
-    module: {
-        loaders: [
-        {
-            test: /.js$/,
-            loader: "babel-loader",
-            exclude: /node_modules/,
-            options: {
-            presets: [["env", "react"]],
-            plugins: ["transform-class-properties"]
-            }
-        }
-        ]
-    }
+  entry: './src/index.js', // আপনার React entry file
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: './bundle.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/, // .js এবং .jsx ফাইলের জন্য
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'], // যাতে import করার সময় extension লিখতে না হয়
+  },
+  mode: process.env.NODE_ENV || 'development',
 };

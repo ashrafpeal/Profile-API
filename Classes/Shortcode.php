@@ -1,6 +1,6 @@
 <?php
 
-namespace Syno_WP_React\Classes;
+namespace Syno_WP_React;
 
 
 class Shortcode {

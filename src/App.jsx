@@ -5,7 +5,9 @@ import Footer from "./pages/component/Footer";
 const App = () => {
   return (
     <>
+      <Header />
       <h1>Hello, Syno WP React!</h1>
+      <Footer />
     </>
   );
 };

@@ -14,6 +14,7 @@
  * Text Domain:       syno-wp-react
  * Domain Path:       /languages
  */
+
 namespace Syno_WP_React;
 // If this file is called directly, abort.
 if (! defined('ABSPATH')) {
@@ -22,13 +23,14 @@ if (! defined('ABSPATH')) {
 
 
 final class Syno_WP_React {
-    
+
     /**
      * Constructor.
      */
     public function __construct() {
         add_action('init', [$this, 'load_textdomain']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
         $this->define_constants();
         $this->autoload_classes();
     }
@@ -43,25 +45,30 @@ final class Syno_WP_React {
     /**
      * Enqueue scripts and styles.
      */
-    public function enqueue_scripts() {
+    public function enqueue_scripts($handle) {
         // Enqueue the main stylesheet
         wp_enqueue_style(
             'syno-wp-react-style',
             SYNO_WP_REACT_PLUGIN_URL . 'assets/css/main.css',
             [],
-            filemtime(SYNO_WP_REACT_PLUGIN_DIR . 'assets/css/main.css'),
+            time(),
             'all'
         );
-        
+
         // Enqueue the main React script
         wp_enqueue_script(
             'syno-wp-react-script',
-            SYNO_WP_REACT_PLUGIN_URL . 'build/index.js',
+            SYNO_WP_REACT_PLUGIN_URL . 'build/bundle.js',
             ['wp-element'],
-            filemtime(SYNO_WP_REACT_PLUGIN_DIR . 'build/index.js'),
+            time(),
             true
         );
-        
+
+        wp_localize_script('syno-wp-react-script', 'syno_wp_react', [
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'api_url' => home_url('/wp-json'),
+            'nonce'    => wp_create_nonce('syno_wp_react_nonce'),
+        ]);
     }
 
     /**
@@ -104,14 +111,18 @@ final class Syno_WP_React {
             }
             $relative_class = substr($class, $len);
             $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+
             if (file_exists($file)) {
-                include_once $file;
+                require $file;
             }
         });
+
+        if (is_admin()) {
+            new \Syno_WP_React\Admin_Menu();
+        }
+
+        new \Syno_WP_React\Shortcode();
     }
-    
 }
 
-new \Syno_WP_React\Syno_WP_React();
-
-
+new Syno_WP_React();
