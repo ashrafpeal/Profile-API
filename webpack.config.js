@@ -1,15 +1,29 @@
 const path = require('path');
+const fs = require('fs');
+
+// src ফোল্ডারের সব entry খুঁজে বের করা
+const entryDir = path.resolve(__dirname, 'src');
+const entries = {};
+
+fs.readdirSync(entryDir).forEach(file => {
+  const ext = path.extname(file);
+  const name = path.basename(file, ext);
+
+  if (ext === '.js' || ext === '.jsx') {
+    entries[name] = path.resolve(entryDir, file);
+  }
+});
 
 module.exports = {
-  entry: './src/index.js', // আপনার React entry file
+  entry: entries, // সব entry dynamically add হবে
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: './bundle.js',
+    filename: '[name].bundle.js', // entry file নাম অনুযায়ী bundle হবে
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, // .js এবং .jsx ফাইলের জন্য
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -18,7 +32,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'], // যাতে import করার সময় extension লিখতে না হয়
+    extensions: ['.js', '.jsx'],
   },
   mode: process.env.NODE_ENV || 'development',
 };

@@ -16,11 +16,11 @@
  */
 
 namespace Syno_WP_React;
+
 // If this file is called directly, abort.
 if (! defined('ABSPATH')) {
     die();
 }
-
 
 final class Syno_WP_React {
 
@@ -29,8 +29,8 @@ final class Syno_WP_React {
      */
     public function __construct() {
         add_action('init', [$this, 'load_textdomain']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
+        add_action('wp_enqueue_scripts', [$this, 'frontend_scripts']);
+        add_action('admin_enqueue_scripts', [$this, 'admin_scripts']);
         $this->define_constants();
         $this->autoload_classes();
     }
@@ -43,28 +43,40 @@ final class Syno_WP_React {
     }
 
     /**
-     * Enqueue scripts and styles.
+     * Enqueue scripts and styles for the admin area.
      */
-    public function enqueue_scripts($handle) {
-        // Enqueue the main stylesheet
-        wp_enqueue_style(
-            'syno-wp-react-style',
-            SYNO_WP_REACT_PLUGIN_URL . 'assets/css/main.css',
-            [],
-            time(),
-            'all'
-        );
-
+    public function frontend_scripts() {
         // Enqueue the main React script
         wp_enqueue_script(
-            'syno-wp-react-script',
-            SYNO_WP_REACT_PLUGIN_URL . 'build/bundle.js',
+            'syno-wp-react-frontend-script',
+            SYNO_WP_REACT_PLUGIN_URL . 'build/index.bundle.js',
             ['wp-element'],
             time(),
             true
         );
 
-        wp_localize_script('syno-wp-react-script', 'syno_wp_react', [
+        wp_localize_script('syno-wp-react-frontend-script', 'syno_wp_react_frontend', [
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'api_url' => home_url('/wp-json'),
+            'nonce'    => wp_create_nonce('syno_wp_react_nonce'),
+        ]);
+    }
+
+    /**
+     * Enqueue scripts and styles for the admin area.
+     */
+    public function admin_scripts() {
+        // Enqueue the main React script
+        wp_enqueue_script(
+            'syno-wp-react-admin-script',
+            SYNO_WP_REACT_PLUGIN_URL . 'build/admin.bundle.js',
+            ['wp-element'],
+            time(),
+            true
+        );
+
+        wp_localize_script('syno-wp-react-admin-script', 'syno_wp_react_admin', [
+
             'ajax_url' => admin_url('admin-ajax.php'),
             'api_url' => home_url('/wp-json'),
             'nonce'    => wp_create_nonce('syno_wp_react_nonce'),
@@ -117,10 +129,12 @@ final class Syno_WP_React {
             }
         });
 
+        // Admin Menu
         if (is_admin()) {
             new \Syno_WP_React\Admin_Menu();
         }
 
+        // For frontend
         new \Syno_WP_React\Shortcode();
     }
 }

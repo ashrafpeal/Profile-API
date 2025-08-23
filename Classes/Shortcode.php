@@ -16,7 +16,7 @@ class Shortcode {
         
         ob_start(); ?>
         <h1><?php echo esc_html($title); ?></h1>
-        <div id="syno_wp_react"></div>
+        <div id="syno-wp-react-frontend"></div>
 
         <?php return ob_get_clean();
     }
