@@ -1,0 +1,16 @@
+{
+    "name": "ashraf/syno-wp-react",
+    "description": "WP plugin with React (multi-entry) and Eloquent ORM",
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">=8.0",
+        "illuminate/database": "^12.25.0",
+        "illuminate/pagination": "^12.25.0",
+        "illuminate/support": "^12.25.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Syno_WP_React\\": "Classes/"
+        }
+    }
+}

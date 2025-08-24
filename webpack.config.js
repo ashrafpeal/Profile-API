@@ -29,6 +29,31 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|webp)$/, // images, fonts + webp/jpeg
+        type: 'asset/resource', // modern Webpack 5 way
+        generator: {
+          filename: 'assets/img/[hash][ext][query]', // output path
+        },
+      },
+      {
+        test: /\.(woff2?|ttf|eot)$/, // fonts
+        type: 'asset/resource', // modern Webpack 5 way
+        generator: {
+          filename: 'assets/fonts/[hash][ext][query]', // output path
+        },
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/, // videos & audio
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/video/[hash][ext][query]',
+        },
+      },
     ],
   },
   resolve: {

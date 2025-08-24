@@ -22,6 +22,12 @@ if (! defined('ABSPATH')) {
     die();
 }
 
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 final class Syno_WP_React {
 
     /**
@@ -31,8 +37,10 @@ final class Syno_WP_React {
         add_action('init', [$this, 'load_textdomain']);
         add_action('wp_enqueue_scripts', [$this, 'frontend_scripts']);
         add_action('admin_enqueue_scripts', [$this, 'admin_scripts']);
+        add_action('plugins_loaded', [$this, 'autoload_classes']);
+        register_activation_hook(__FILE__, [$this, 'activate']);
+        register_deactivation_hook(__FILE__, [$this, 'deactivate']);
         $this->define_constants();
-        $this->autoload_classes();
     }
 
     /**
@@ -49,13 +57,13 @@ final class Syno_WP_React {
         // Enqueue the main React script
         wp_enqueue_script(
             'syno-wp-react-frontend-script',
-            SYNO_WP_REACT_PLUGIN_URL . 'build/index.bundle.js',
+            SYNO_WP_REACT_PLUGIN_URL . 'build/frontend.bundle.js',
             ['wp-element'],
             time(),
             true
         );
 
-        wp_localize_script('syno-wp-react-frontend-script', 'syno_wp_react_frontend', [
+        wp_localize_script('syno-wp-react-frontend-script','swr_frontend', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'api_url' => home_url('/wp-json'),
             'nonce'    => wp_create_nonce('syno_wp_react_nonce'),
@@ -75,7 +83,7 @@ final class Syno_WP_React {
             true
         );
 
-        wp_localize_script('syno-wp-react-admin-script', 'syno_wp_react_admin', [
+        wp_localize_script('syno-wp-react-admin-script', 'swr_admin', [
 
             'ajax_url' => admin_url('admin-ajax.php'),
             'api_url' => home_url('/wp-json'),
@@ -100,42 +108,59 @@ final class Syno_WP_React {
      * Activate the plugin.
      */
     public function activate() {
-        // Activation code here
+        if (! current_user_can('activate_plugins')) {
+            return;
+        }
+        // Initialize DB connection manually for activation
+        $db = new \Syno_WP_React\DB();
+        $db->connect_db(); // ensures Capsule is ready
+        $table = 'syno_wp_react';
+        if (!Capsule::schema()->hasTable($table)) {
+            Capsule::schema()->create($table, function ($table) {
+                $table->id();
+                $table->string('name');
+                $table->string('email');
+                $table->string('phone');
+                $table->string('address');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
      * Deactivate the plugin.
      */
     public function deactivate() {
-        // Deactivation code here
+        if (! current_user_can('activate_plugins')) {
+            return;
+        }
+        // Initialize DB connection manually for activation
+        $db = new \Syno_WP_React\DB();
+        $db->connect_db(); // ensures Capsule is ready
+        $table = 'syno_wp_react';
+        if (Capsule::schema()->hasTable($table)) {
+            Capsule::schema()->dropIfExists($table);
+        }
     }
 
     /**
      * Autoload Classes
      */
     public function autoload_classes() {
-        spl_autoload_register(function ($class) {
-            $prefix = 'Syno_WP_React\\';
-            $base_dir = SYNO_WP_REACT_DIR . '/Classes/';
-            $len = strlen($prefix);
-            if (strncmp($prefix, $class, $len) !== 0) {
-                return;
-            }
-            $relative_class = substr($class, $len);
-            $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-
-            if (file_exists($file)) {
-                require $file;
-            }
-        });
-
         // Admin Menu
         if (is_admin()) {
             new \Syno_WP_React\Admin_Menu();
         }
-
         // For frontend
         new \Syno_WP_React\Shortcode();
+        // DB Connection
+        new \Syno_WP_React\DB();
+
+        // Model
+        new \Syno_WP_React\Model\Syno_Wp_React();
+
+        // REST API Routes
+        new \Syno_WP_React\API\Syno_Wp_React_Rest_Route();
     }
 }
 

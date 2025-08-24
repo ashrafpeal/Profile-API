@@ -21,9 +21,9 @@ class Admin_Menu {
     }
 
     public function admin_page_content() { ?>
-        <h1>Syno WP React Admin Page</h1>
-        <p>This is the admin page for the Syno WP React plugin.</p>
-        <div id="syno-wp-react-admin"></div>
-    <?php }
+        <div class="wrap">
+            <div id="syno-wp-react-admin"></div>
+        </div>
+<?php }
 }
 // new \Syno_WP_React\Admin_Menu();    

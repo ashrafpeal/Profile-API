@@ -1,9 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 
 import App from './pages/frontend/App';
 
 // add css file
+import '../assets/css/bootstrap.css';
 import '../assets/css/frontend.css';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Root element not found');
         return;
     }
-    ReactDOM.render(<App />, document.getElementById('syno-wp-react-frontend'));
+    const root = createRoot(document.getElementById('syno-wp-react-frontend'));
+    root.render(<App />);
     console.log('Frontend React App rendered');
 });
