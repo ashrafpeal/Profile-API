@@ -8,11 +8,11 @@ import '../assets/css/bootstrap.css';
 import '../assets/css/frontend.css';
 
 document.addEventListener('DOMContentLoaded', function () {
-    if (document.getElementById('syno-wp-react-frontend') === null || typeof document.getElementById('syno-wp-react-frontend') === 'undefined') {
+    if (document.getElementById('profile-api-frontend') === null || typeof document.getElementById('profile-api-frontend') === 'undefined') {
         console.log('Root element not found');
         return;
     }
-    const root = createRoot(document.getElementById('syno-wp-react-frontend'));
+    const root = createRoot(document.getElementById('profile-api-frontend'));
     root.render(<App />);
-    console.log('Frontend React App rendered');
+    // console.log('Frontend React App rendered');
 });

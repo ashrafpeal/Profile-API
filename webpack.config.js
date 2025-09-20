@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-
 // src ফোল্ডারের সব entry খুঁজে বের করা
 const entryDir = path.resolve(__dirname, 'src');
 const entries = {};
@@ -60,4 +59,5 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
   mode: process.env.NODE_ENV || 'development',
+  
 };
