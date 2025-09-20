@@ -1,6 +1,5 @@
 *.zip
 /node_modules
 /vendor
-/build
 .gitignore
 .env
