@@ -1,4 +1,4 @@
-.btn_orange_active{
+.btn_orange_active {
     background-color: var(--hover);
 }
 
@@ -83,13 +83,15 @@
 
 }
 
-.result{
+#profile-api-frontend {
+    .result {
 
-    p{
-        color: #666;
+        p {
+            color: #666 !important;
 
-        strong{
-            color: #000;
+            strong {
+                color: #000 !important;
+            }
         }
     }
 }
