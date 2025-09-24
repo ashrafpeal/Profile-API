@@ -148,7 +148,7 @@ class Person {
                 'Accept'        => 'application/json',
             ],
             'body'    => wp_json_encode( $body ),
-            'timeout' => 5,
+            'timeout' => 30,
         ] );
 
         if ( is_wp_error( $response ) ) {
@@ -228,7 +228,7 @@ class Person {
                 'Accept'        => 'application/json',
             ],
             'body'    => wp_json_encode( $body ),
-            'timeout' => 5,
+            'timeout' => 30,
         ] );
 
         if ( is_wp_error( $response ) ) {
@@ -359,7 +359,7 @@ class Person {
                 'Accept'        => 'application/json',
             ],
             'body'    => wp_json_encode( $body ),
-            'timeout' => 5,
+            'timeout' => 30,
         ] );
 
         if ( is_wp_error( $response ) ) {
@@ -403,7 +403,7 @@ class Person {
                 'Accept'        => 'application/json',
             ],
             'body'    => wp_json_encode( $body ),
-            'timeout' => 5,
+            'timeout' => 30,
         ] );
 
         if ( is_wp_error( $response ) ) {

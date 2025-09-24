@@ -16,6 +16,8 @@ const Linkedin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setEmailMessage(null);
+        setPhoneMessage(null);
         setError(null);
         setMessage(null);
         setData(null);
@@ -82,6 +84,7 @@ const Linkedin = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError(data?.message);
+                getPersonEmail(id);
                 return;
             }
 
@@ -91,6 +94,7 @@ const Linkedin = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError(meta?.message);
+                getPersonEmail(id);
                 return;
             }
 
@@ -104,10 +108,12 @@ const Linkedin = () => {
                 getPersonEmail(id);
             }
         } catch (error) {
+            console.log(error);
             console.error(error.response ? error.response.data : error.message);
             setMessage(null);
             setPhoneMessage(null);
             setError("Phone Number Not Found");
+            getPersonEmail(id);
         } finally {
             setLoading(false);
         }
