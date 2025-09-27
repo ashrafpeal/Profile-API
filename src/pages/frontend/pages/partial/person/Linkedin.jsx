@@ -94,8 +94,11 @@ const Linkedin = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError(meta?.message);
-                getPersonEmail(id);
-                return;
+                let errorPhone = setTimeout(() => {
+                    setError(null);
+                    getPersonEmail(id);
+                }, 1000);
+                return () => clearTimeout(errorPhone);
             }
 
             // execute if phone found
@@ -113,7 +116,11 @@ const Linkedin = () => {
             setMessage(null);
             setPhoneMessage(null);
             setError("Phone Number Not Found");
-            getPersonEmail(id);
+            let errorPhone = setTimeout(() => {
+                setError(null);
+                getPersonEmail(id);
+            }, 1000);
+            return () => clearTimeout(errorPhone);
         } finally {
             setLoading(false);
         }
@@ -122,7 +129,7 @@ const Linkedin = () => {
     const getPersonEmail = async (id) => {
         console.log("getting email for id: " + id);
         setPhoneMessage(null);
-        setEmailMessage('Now Looking For Email.')
+        setEmailMessage('Now Looking For Email.');
         let url = pa_frontend.api_url + '/profile-api/v1/person/getEmail';
         try {
             const response = await axios.post(url, { id: id });
@@ -142,6 +149,10 @@ const Linkedin = () => {
             setEmailMessage(`✅ Person Email Found.`);
             console.log(data?.data);
             setEmail(data?.data?.email);
+            let timer = setTimeout(() => {
+                setEmailMessage(null);
+            }, 3000);
+            return () => clearTimeout(timer);
         } catch (error) {
             console.error(error.response ? error.response.data : error.message);
             setMessage(null);
