@@ -44,7 +44,10 @@ const Email = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError(meta ?. message);
-                return;
+                let timer = setTimeout(() => {
+                    setError(null);
+                }, 2000);
+                return () => clearTimeout(timer);
             }
 
             // execute if person found
@@ -60,16 +63,28 @@ const Email = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError({message: err.message, status: err.response.status, statusText: err.response.statusText, data: err.response.data});
+                let timer = setTimeout(() => {
+                    setError(null);
+                }, 2000);
+                return () => clearTimeout(timer);
             } else if (err.request) { // Request was made but no response received
                 console.log(err.message);
                 setMessage(null);
                 setPhoneMessage(null);
                 setError("No response received from server");
+                let timer = setTimeout(() => {
+                    setError(null);
+                }, 2000);
+                return () => clearTimeout(timer);
             } else { // Something else happened
                 console.log(err.message);
                 setMessage(null);
                 setPhoneMessage(null);
                 setError("Error setting up request");
+                let timer = setTimeout(() => {
+                    setError(null);
+                }, 2000);
+                return () => clearTimeout(timer);
             }
         } finally {
             setLoading(false);
@@ -92,7 +107,6 @@ const Email = () => {
             if (data ?. id) {
                 setData(data);
                 setMessage("✅ Person Found! Now searching for phone number..");
-
                 getPhoneNumber(data ?. id);
             }
 
@@ -101,6 +115,10 @@ const Email = () => {
             setMessage(null);
             setPhoneMessage(null);
             setError("Person Not Found");
+            let timer = setTimeout(() => {
+                setError(null);
+            }, 2000);
+            return () => clearTimeout(timer);
         }
     }
 
@@ -118,7 +136,7 @@ const Email = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError(data ?. message);
-                // window.location.href = pa_frontend.domain + "/free-trial/";
+                window.location.href = pa_frontend.domain + "/free-trial/";
                 return;
             }
 
@@ -128,14 +146,21 @@ const Email = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError(meta ?. message);
-                return;
+                let timer = setTimeout(() => {
+                    setError(null);
+                }, 2000);
+                return () => clearTimeout(timer);
             }
 
             // execute if phone found
             setMessage(null);
             setPhoneMessage(`✅ Phone Number Found.`);
             console.log(data ?. data);
-            setPhoneNumber(data ?. data ?. phone);
+            setPhoneNumber(data?.data?.phone);
+            let timer = setTimeout(() => {
+                setPhoneMessage(null);
+            }, 2000);
+            return () => clearTimeout(timer);
         } catch (error) {
             console.error(error.response ? error.response.data : error.message);
             setMessage(null);
