@@ -47,7 +47,10 @@ const Linkedin = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError('Person ' + meta?.message);
-                return;
+                let errorPerson = setTimeout(() => {
+                    setError(null);
+                }, 2000);
+                return () => clearTimeout(errorPerson);
             }
 
             // execute if person found
@@ -64,6 +67,10 @@ const Linkedin = () => {
             setMessage(null);
             setPhoneMessage(null);
             setError(error.response ? error.response.data : error.message);
+            let errorPerson = setTimeout(() => {
+                setError(null);
+            }, 2000);
+            return () => clearTimeout(errorPerson);
         } finally {
             setLoading(false);
         }
@@ -84,8 +91,10 @@ const Linkedin = () => {
                 setMessage(null);
                 setPhoneMessage(null);
                 setError(data?.message);
-                getPersonEmail(id);
-                return;
+                let errorPhone = setTimeout(() => {
+                    window.location.href = pa_frontend.domain + "/free-trial/";
+                }, 1000);
+                return () => clearTimeout(errorPhone);
             }
 
             // execute if person not found
@@ -141,7 +150,10 @@ const Linkedin = () => {
                 setMessage(null);
                 setEmailMessage(null);
                 setError(meta?.message);
-                return;
+                let errorEmail = setTimeout(() => {
+                    window.location.href = pa_frontend.domain + "/free-trial/";
+                }, 2000);
+                return () => clearTimeout(errorEmail);
             }
             // execute if email found
             setMessage(null);
@@ -159,6 +171,10 @@ const Linkedin = () => {
             setPhoneMessage(null);
             setEmailMessage(null);
             setError("Email Not Found");
+            let errorEmail = setTimeout(() => {
+                setError(null);
+            }, 2000);
+            return () => clearTimeout(errorEmail);
         }
     }
 
