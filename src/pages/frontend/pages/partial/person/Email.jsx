@@ -47,7 +47,7 @@ const Email = () => {
                 let timer = setTimeout(() => {
                     setError(null);
                 }, 2000);
-                return () => clearTimeout(timer);
+                return() => clearTimeout(timer);
             }
 
             // execute if person found
@@ -66,7 +66,7 @@ const Email = () => {
                 let timer = setTimeout(() => {
                     setError(null);
                 }, 2000);
-                return () => clearTimeout(timer);
+                return() => clearTimeout(timer);
             } else if (err.request) { // Request was made but no response received
                 console.log(err.message);
                 setMessage(null);
@@ -75,7 +75,7 @@ const Email = () => {
                 let timer = setTimeout(() => {
                     setError(null);
                 }, 2000);
-                return () => clearTimeout(timer);
+                return() => clearTimeout(timer);
             } else { // Something else happened
                 console.log(err.message);
                 setMessage(null);
@@ -84,7 +84,7 @@ const Email = () => {
                 let timer = setTimeout(() => {
                     setError(null);
                 }, 2000);
-                return () => clearTimeout(timer);
+                return() => clearTimeout(timer);
             }
         } finally {
             setLoading(false);
@@ -118,7 +118,7 @@ const Email = () => {
             let timer = setTimeout(() => {
                 setError(null);
             }, 2000);
-            return () => clearTimeout(timer);
+            return() => clearTimeout(timer);
         }
     }
 
@@ -149,18 +149,18 @@ const Email = () => {
                 let timer = setTimeout(() => {
                     setError(null);
                 }, 2000);
-                return () => clearTimeout(timer);
+                return() => clearTimeout(timer);
             }
 
             // execute if phone found
             setMessage(null);
             setPhoneMessage(`✅ Phone Number Found.`);
             console.log(data ?. data);
-            setPhoneNumber(data?.data?.phone);
+            setPhoneNumber(data ?. data ?. phone);
             let timer = setTimeout(() => {
                 setPhoneMessage(null);
             }, 2000);
-            return () => clearTimeout(timer);
+            return() => clearTimeout(timer);
         } catch (error) {
             console.error(error.response ? error.response.data : error.message);
             setMessage(null);
@@ -170,36 +170,27 @@ const Email = () => {
     }
 
 
-
-
     return (
         <>
 
-            <div className="row justify-content-center my-5">
+            <div className="row justify-content-center">
                 <div className="col-md-8">
-                    <div className="card">
-                        <div className="card-header">
-                            <h5>Search by Email Address</h5>
-                        </div>
-                        <div className="card-body">
-                            <form onSubmit={handleSubmit}
-                                className='d-flex align-items-center gap-2'>
-                                <input type="email"
-                                    value={email}
-                                    onChange={
-                                        (e) => setEmail(e.target.value)
-                                    }
-                                    placeholder="Email e.g: john@example.com"
-                                    required
-                                    className="form-control"/>
-                                <button type="submit" className="btn_orange"
-                                    disabled={loading}>
-                                    {
-                                    loading ? 'Searching...' : 'Search'
-                                } </button>
-                            </form>
-                        </div>
-                    </div>
+                    <form onSubmit={handleSubmit}
+                        className='d-flex align-items-center gap-2'>
+                        <input type="email"
+                            value={email}
+                            onChange={
+                                (e) => setEmail(e.target.value)
+                            }
+                            placeholder="Email e.g: john@example.com"
+                            required
+                            className="form-control rounded-5"/>
+                        <button type="submit" className="btn_orange btn_white"
+                            disabled={loading}>
+                            {
+                            loading ? 'Searching...' : 'Search'
+                        } </button>
+                    </form>
                 </div>
             </div>
 
@@ -253,37 +244,44 @@ const Email = () => {
                                     {
                                     phoneNumber && (
                                         <p>
-                                            <strong>Phone: </strong>
+                                            <strong>Phone:
+                                            </strong>
                                             {phoneNumber} </p>
                                     )
                                 }
                                     <p>
-                                        <strong>Full Name: </strong>
+                                        <strong>Full Name:
+                                        </strong>
                                         {
                                         data ?. name ? data ?. name : 'N/A'
                                     } </p>
                                     <p>
-                                        <strong>First Name: </strong>
+                                        <strong>First Name:
+                                        </strong>
                                         {
                                         data ?. firstName ? data ?. firstName : 'N/A'
                                     } </p>
                                     <p>
-                                        <strong>Last Name: </strong>
+                                        <strong>Last Name:
+                                        </strong>
                                         {
                                         data ?. lastName ? data ?. lastName : 'N/A'
                                     } </p>
                                     <p>
-                                        <strong>Birth Year: </strong>
+                                        <strong>Birth Year:
+                                        </strong>
                                         {
                                         data ?. birthYear ? data ?. birthYear : 'N/A'
                                     } </p>
                                     <p>
-                                        <strong>Country: </strong>
+                                        <strong>Country:
+                                        </strong>
                                         {
                                         data ?. worldRegion ? data ?. worldRegion : data ?. countryCode ? data ?. countryCode : 'N/A'
                                     } </p>
                                     <p>
-                                        <strong>Photo: </strong>
+                                        <strong>Photo:
+                                        </strong>
                                         {
                                         data ?. photoUrl ? (
                                             <img src={
@@ -299,46 +297,69 @@ const Email = () => {
                                         )
                                     } </p>
                                     <p>
-                                        <strong>LinkedIn: </strong>
-                                        {data ?. linkedInUrl ? (
+                                        <strong>LinkedIn:
+                                        </strong>
+                                        {
+                                        data ?. linkedInUrl ? (
                                             <Link className='btn btn-link'
-                                                    to={data?.linkedInUrl}
-                                                    target='_blank'
-                                                    >{data?.linkedInUrl}</Link>
-                                        ) : 'N/A'}
-                                    </p>
+                                                to={
+                                                    data ?. linkedInUrl
+                                                }
+                                                target='_blank'>
+                                                {
+                                                data ?. linkedInUrl
+                                            }</Link>
+                                        ) : 'N/A'
+                                    } </p>
                                     <p>
-                                        <strong>Facebook: </strong>
-                                        {data ?. facebookUrl ? (
+                                        <strong>Facebook:
+                                        </strong>
+                                        {
+                                        data ?. facebookUrl ? (
                                             <Link className='btn btn-link'
-                                                    to={data?.facebookUrl}
-                                                    target='_blank'
-                                                    >{data?.facebookUrl}</Link>
-                                        ) : 'N/A'}
-                                    </p>
+                                                to={
+                                                    data ?. facebookUrl
+                                                }
+                                                target='_blank'>
+                                                {
+                                                data ?. facebookUrl
+                                            }</Link>
+                                        ) : 'N/A'
+                                    } </p>
                                     <p>
-                                        <strong>Experiences: </strong>
+                                        <strong>Experiences:
+                                        </strong>
                                         <ul> {
                                             data ?. experiences && data ?. experiences ?. map((item, index) => (
                                                 <li key={index}>
                                                     <p>
-                                                        <strong>Company: </strong>
-                                                        {item?.name ? item?.name : 'N/A'}    
-                                                    </p>
-                                                    <p>
-                                                        <strong>Website: </strong>
+                                                        <strong>Company:
+                                                        </strong>
                                                         {
-                                                        item?.domain ? <Link className='btn btn-link'
-                                                            to={item?.domain}
-                                                            target='_blank'
-                                                            >{item?.domain}</Link> : 'N/A'
+                                                        item ?. name ? item ?. name : 'N/A'
                                                     } </p>
                                                     <p>
-                                                        <strong>Position: </strong>
+                                                        <strong>Website:
+                                                        </strong>
                                                         {
-                                                        item?.title ? item?.title : 'N/A'} </p>
+                                                        item ?. domain ? <Link className='btn btn-link'
+                                                            to={
+                                                                item ?. domain
+                                                            }
+                                                            target='_blank'>
+                                                            {
+                                                            item ?. domain
+                                                        }</Link> : 'N/A'
+                                                    } </p>
                                                     <p>
-                                                        <strong>Start Date: </strong>
+                                                        <strong>Position:
+                                                        </strong>
+                                                        {
+                                                        item ?. title ? item ?. title : 'N/A'
+                                                    } </p>
+                                                    <p>
+                                                        <strong>Start Date:
+                                                        </strong>
                                                         {
                                                         item ?. startedAt ? new Date(item.startedAt).toLocaleString('en-US', {
                                                             weekday: 'long',
@@ -348,7 +369,8 @@ const Email = () => {
                                                         }) : 'No date available'
                                                     } </p>
                                                     <p>
-                                                        <strong>End Date: </strong>
+                                                        <strong>End Date:
+                                                        </strong>
                                                         {
                                                         item ?. endedAt ? new Date(item.endedAt).toLocaleString('en-US', {
                                                             weekday: 'long',
@@ -358,14 +380,16 @@ const Email = () => {
                                                         }) : 'Present'
                                                     } </p>
                                                     <p>
-                                                        <strong>Working: </strong>
+                                                        <strong>Working:
+                                                        </strong>
                                                         {
-                                                        item?.title ? item?.title : 'N/A'
+                                                        item ?. title ? item ?. title : 'N/A'
                                                     } </p>
                                                     <p>
-                                                        <strong>Seniority: </strong>
+                                                        <strong>Seniority:
+                                                        </strong>
                                                         {
-                                                        item?.seniority ? item?.seniority : 'N/A'
+                                                        item ?. seniority ? item ?. seniority : 'N/A'
                                                     } </p>
                                                 </li>
                                             ))

@@ -33,7 +33,7 @@ const App = () => {
                                             route.name
                                         }>
                                         <NavLink className={
-                                            ({ isActive }) => `btn_orange ${isActive ? "btn_orange_active" : ""
+                                            ({ isActive }) => `btn_orange btn_white ${isActive ? "btn_orange_active" : ""
                                                 }`
                                         }
                                             to={
