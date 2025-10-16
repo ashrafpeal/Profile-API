@@ -100,7 +100,7 @@ const Email = () => {
                 ids: id
             },);
 
-            console.log(response ?. data);
+            console.log('person response: ', response);
             console.log(response ?. data ?. data ?. data.results[0]);
             let data = response ?. data ?. data ?. data ?. results[0];
 
@@ -127,7 +127,7 @@ const Email = () => {
         let url = pa_frontend.api_url + '/profile-api/v1/person/phone';
         try {
             const response = await axios.post(url, {id: id});
-            console.log(response);
+            console.log('phone response: ', response);
             let data = response ?. data;
 
             // execute if reached search limit
@@ -173,7 +173,7 @@ const Email = () => {
     return (
         <>
 
-            <div className="row justify-content-center">
+            <div className="row justify-content-center mb-5">
                 <div className="col-md-8">
                     <form onSubmit={handleSubmit}
                         className='d-flex align-items-center gap-2'>

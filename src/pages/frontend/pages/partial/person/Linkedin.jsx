@@ -182,7 +182,7 @@ const Linkedin = () => {
 
     return (
         <>
-            <div className="row justify-content-center">
+            <div className="row justify-content-center mb-5">
                 <div className="col-md-8">
                     <form onSubmit={handleSubmit}
                         className='d-flex align-items-center gap-2'>
